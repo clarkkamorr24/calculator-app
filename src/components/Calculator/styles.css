@@ -5,7 +5,7 @@ button:focus {
 body {
   display: flex;
   flex: 1;
-  margin-top: 30px;
+  margin-top: 100px;
   align-items: center;
   justify-content: center;
   font-family: "Roboto", sans-serif;
@@ -18,21 +18,26 @@ body {
 }
 
 #output {
-  height: 80px;
   box-shadow: 0px 0px 1px 1px #a7a7a0;
-  background-color: #181817;
-  color: white;
+  background-color: #031d38;
+  color: black;
   display: table;
   border-radius: 6px 6px 0px 0px;
+  flex-shrink: 1;
 }
 
 #output-text {
   text-align: right;
   font-size: 45pt;
-  height: 80px;
-  line-height: 80px;
-  width: 320px;
+  height: 100px;
+  line-height: 120px;
+  width: 310px;
   margin-right: 20px;
-  overflow: hidden;
-  text-overflow: clip;
+  flex: 1;
+  flex-shrink: 1;
+}
+#screen {
+  border-radius: 6px 6px 1px 1px;
+  margin: 5px;
+  background-color: #f0f3f4;
 }

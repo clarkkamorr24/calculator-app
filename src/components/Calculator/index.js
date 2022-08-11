@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import "./styles.css";
 import { VerifyContext } from "../VerifyContextProvider";
 import { CalculatorButton } from "../CalculatorButton";
@@ -6,38 +6,47 @@ import { CalculatorButton } from "../CalculatorButton";
 export const Calculator = () => {
   const VerifyData = useContext(VerifyContext);
   const { state, setState } = VerifyData;
+
   const addFloatingPoint = () => {
-    let displayValue = state.displayValue;
-    if (displayValue.indexOf(".") === -1) {
-      displayValue += ".";
+    const { displayValue } = state;
+    if (!/\./.test(displayValue)) {
+      setState({
+        displayValue: displayValue + ".",
+      });
     }
-    setState({ displayValue: displayValue });
   };
 
-  const applyPercentage = () => {
+  const applyPercentage = useCallback(() => {
     let displayValue = state.displayValue;
     setState({ displayValue: displayValue / 100 });
-  };
+  }, [state, setState]);
 
   const changeSign = () => {
     setState({ displayValue: state.displayValue * -1 });
   };
 
-  const enterDigit = (digit) => {
-    if (state.calculatorState === 2 && state.displayValue.length > 10) {
-      return;
-    }
-    let calculatorState = state.calculatorState;
-    if (state.expectingSecondNumber || state.displayValue === "0") {
-      setState({ ...state, displayValue: digit, expectingSecondNumber: false });
-    } else {
-      setState({ ...state, displayValue: state.displayValue + digit });
-    }
+  const enterDigit = useCallback(
+    (digit) => {
+      if (state.calculatorState === 2 && state.displayValue.length > 10) {
+        return;
+      }
+      let calculatorState = state.calculatorState;
+      if (state.expectingSecondNumber || state.displayValue === "0") {
+        setState({
+          ...state,
+          displayValue: digit,
+          expectingSecondNumber: false,
+        });
+      } else {
+        setState({ ...state, displayValue: state.displayValue + digit });
+      }
 
-    if (calculatorState === 1) {
-      setState({ ...state, displayValue: digit, calculatorState: 2 });
-    }
-  };
+      if (calculatorState === 1) {
+        setState({ ...state, displayValue: digit, calculatorState: 2 });
+      }
+    },
+    [state, setState]
+  );
 
   const handleOperatorPress = (operator) => {
     let calculatorState = state.calculatorState;
@@ -88,6 +97,10 @@ export const Calculator = () => {
   const clearData = () => {
     setState({
       displayValue: "0",
+      lastValue: 0,
+      calculatorState: 1,
+      currentOperator: null,
+      expectingSecondNumber: false,
     });
   };
 
@@ -112,8 +125,10 @@ export const Calculator = () => {
   return (
     <div id="calculator">
       <div id="output">
-        <div id="output-text" style={{ fontSize: getFontSize() }}>
-          {state.displayValue}
+        <div id="screen">
+          <div id="output-text" style={{ fontSize: getFontSize() }}>
+            {state.displayValue}
+          </div>
         </div>
       </div>
       <div id="buttons">
@@ -166,7 +181,7 @@ export const Calculator = () => {
           <CalculatorButton value={"."} onClick={() => addFloatingPoint()} />
           <CalculatorButton
             value={"="}
-            className={"operator-btn"}
+            className={"equals-btn"}
             onClick={() => handleOperatorPress("equals")}
           />
         </div>
