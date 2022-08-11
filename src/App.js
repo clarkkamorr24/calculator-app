@@ -1,12 +1,11 @@
-import logo from './logo.svg';
-import './App.css';
+import { VerifyContextProvider, Calculator } from "./components";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-     
-    </div>
+    <VerifyContextProvider>
+      <Calculator />
+    </VerifyContextProvider>
   );
-}
+};
 
 export default App;

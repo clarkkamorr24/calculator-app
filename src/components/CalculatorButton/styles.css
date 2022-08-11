@@ -1,0 +1,27 @@
+#buttons {
+}
+
+.button {
+  background-color: #eeeee4;
+  display: inline-block;
+  border: solid 1px #a7a7a0;
+  height: 60px;
+  width: 85px;
+  text-align: center;
+  font-size: 15pt;
+}
+
+.operator-btn {
+  color: white;
+  background-color: #611131;
+  display: inline-block;
+  border: solid 1px #a7a7a0;
+  height: 60px;
+  width: 85px;
+  text-align: center;
+  font-size: 15pt;
+}
+
+#zero-btn {
+  width: 170px;
+}
